@@ -6,9 +6,9 @@
   Endpoint Hit limit set to limit the rate usage.
 
 ## Required Packages
-  ~ express
-  ~ express-rate-limit
-  ~ cors
-  ~ jsonwebtoken
-  ~ cookie-parser
+  ~ express<br>
+  ~ express-rate-limit<br>
+  ~ cors<br>
+  ~ jsonwebtoken<br>
+  ~ cookie-parser<br>
   ~ dotenv (optional)
