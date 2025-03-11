@@ -9,7 +9,11 @@ const refreshtokens = [];
 
 authRoute.post("/login", (req, res) => {
   const { username, password } = req.body;
-  if (!users.find((user) => user.user == username && user.password == password))
+  if (
+    !users.find(
+      (user) => user.username == username && user.password == password
+    )
+  )
     return res
       .status(401)
       .json({ status: "error", statusCode: 401, message: "Unauthorized" });
@@ -31,14 +35,12 @@ authRoute.post("/login", (req, res) => {
 
 authRoute.post("/refresh", (req, res) => {
   const { refreshtoken } = req.cookies;
-  if (!refreshtoken /* || !refreshtokens.includes(refreshtoken) */) {
-    return res
-      .status(403)
-      .json({
-        status: "error",
-        statusCode: 403,
-        message: "Invalid Refresh Token",
-      });
+  if (!refreshtoken || !refreshtokens.includes(refreshtoken)) {
+    return res.status(403).json({
+      status: "error",
+      statusCode: 403,
+      message: "Invalid Refresh Token",
+    });
   }
 
   jwt.verify(refreshtoken, process.env.JWT_REFRESH_SECRET, (err, user) => {
@@ -54,12 +56,17 @@ authRoute.post("/refresh", (req, res) => {
   });
 });
 
-
 authRoute.post("/logout", (req, res) => {
   const { refreshtoken } = req.cookies;
-  refreshtokens = refreshtokens.filter(token => token != refreshtoken);
+  refreshtokens = refreshtokens.filter((token) => token != refreshtoken);
   res.clearCookie("refreshtoken");
-  res.status(200).json({ status: "success", statusCode: 200, message: `Logged out successfully` });
+  res
+    .status(200)
+    .json({
+      status: "success",
+      statusCode: 200,
+      message: `Logged out successfully`,
+    });
 });
 
 module.exports = authRoute;
